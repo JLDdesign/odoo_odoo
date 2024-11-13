@@ -22,10 +22,10 @@ jobs:
       - name: Add upstream repository
         run: git remote add upstream https://github.com/odoo/odoo.git
 
-      - name: Fetch and merge upstream 17.0 with no rebase
+      - name: Fetch and merge upstream 17.0 (allow unrelated histories)
         run: |
           git checkout 17.0
-          git pull upstream 17.0 --no-rebase
+          git pull upstream 17.0 --allow-unrelated-histories
 
       - name: Push changes to forked repository
         run: |
