@@ -1,9 +1,9 @@
-name: Sync Fork
+name: Sync Fork Odoo 17
 
 on:
   schedule:
-    - cron: '0 0 * * 0' # Exécute le workflow tous les dimanches à minuit
-  workflow_dispatch: # Permet de déclencher manuellement le workflow si besoin
+    - cron: '0 0 * * 0'  # Exécute le workflow tous les dimanches à minuit
+  workflow_dispatch:  # Permet de déclencher manuellement le workflow si besoin
 
 jobs:
   sync:
@@ -12,7 +12,7 @@ jobs:
       - name: Checkout fork repository
         uses: actions/checkout@v2
         with:
-          persist-credentials: false # Désactive les credentials par défaut
+          persist-credentials: false  # Désactive les credentials par défaut
 
       - name: Add upstream repository
         run: git remote add upstream https://github.com/odoo/odoo.git
@@ -20,16 +20,13 @@ jobs:
       - name: Fetch upstream 17.0
         run: git fetch upstream 17.0
 
-      - name: Check if branch exists
-        run: |
-          git rev-parse --verify 17.0 || echo "La branche 17.0 n'existe pas localement, créer une nouvelle branche"
-        continue-on-error: true
+      - name: Checkout 17.0 branch
+        run: git checkout 17.0
 
-      - name: Checkout and merge upstream changes into 17.0
+      - name: Merge upstream changes into 17.0 (allow unrelated histories)
         run: |
-          git checkout 17.0
-          git merge upstream/17.0
-
+          git merge upstream/17.0 --allow-unrelated-histories
+          
       - name: Push changes
         run: |
           git push origin 17.0
