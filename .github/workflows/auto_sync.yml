@@ -16,7 +16,7 @@ jobs:
 
       - name: Configure Git user
         run: |
-          git config --local user.email "bot@jlddesign.ch"
+          git config --local user.email "no-reply-dev@jlddesign.ch"
           git config --local user.name "Bot JLD"
           
       - name: Add upstream repository
@@ -30,6 +30,13 @@ jobs:
       - name: Merge upstream changes into 17.0
         run: |
           git merge upstream/17.0 --allow-unrelated-histories
+
+      - name: Configure git credentials for push
+        run: |
+          git config --global user.email "no-reply-dev@jlddesign.ch"
+          git config --global user.name "Bot JLD"
+          git config --global credential.helper store
+          echo "https://${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
 
       - name: Push changes to forked repository
         run: |
