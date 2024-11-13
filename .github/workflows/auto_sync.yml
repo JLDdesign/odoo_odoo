@@ -29,7 +29,7 @@ jobs:
 
       - name: Merge upstream changes into 17.0
         run: |
-          git merge upstream/17.0 --allow-unrelated-histories
+           git merge upstream/17.0 --allow-unrelated-histories --strategy=recursive --strategy-option=theirs
 
       - name: Configure git credentials for push
         run: |
