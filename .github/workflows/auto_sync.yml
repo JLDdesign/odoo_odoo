@@ -40,6 +40,6 @@ jobs:
 
       - name: Push changes to forked repository
         run: |
-          git push origin 17.0
+          git push https://${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} 17.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
