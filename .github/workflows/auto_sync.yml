@@ -1,0 +1,38 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Exécute le workflow tous les dimanches à minuit
+  workflow_dispatch: # Permet de déclencher manuellement le workflow si besoin
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout fork repository
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false # Désactive les credentials par défaut
+
+      - name: Add upstream repository
+        run: git remote add upstream https://github.com/odoo/odoo.git
+
+      - name: Fetch upstream 17.0
+        run: git fetch upstream 17.0
+
+      - name: Check if branch exists
+        run: |
+          git rev-parse --verify 17.0 || echo "La branche 17.0 n'existe pas localement, créer une nouvelle branche"
+        continue-on-error: true
+
+      - name: Checkout and merge upstream changes into 17.0
+        run: |
+          git checkout 17.0
+          git merge upstream/17.0
+        if: success()
+
+      - name: Push changes
+        run: |
+          git push origin 17.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
