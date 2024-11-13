@@ -1,4 +1,4 @@
-name: Sync Fork Odoo 17
+name: Sync Fork
 
 on:
   schedule:
@@ -14,6 +14,11 @@ jobs:
         with:
           persist-credentials: false  # Désactive les credentials par défaut
 
+      - name: Configure Git user
+        run: |
+          git config --local user.email "bot@jlddesign.ch"
+          git config --local user.name "Bot JLD"
+          
       - name: Add upstream repository
         run: git remote add upstream https://github.com/odoo/odoo.git
 
