@@ -24,8 +24,9 @@ jobs:
 
       - name: Fetch upstream changes
         run: |
-          git fetch upstream 17.0
           git checkout 17.0
+          git fetch upstream 17.0
+          
 
       - name: Merge upstream changes into 17.0
         run: |
