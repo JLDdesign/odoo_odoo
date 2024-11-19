@@ -24,6 +24,7 @@ jobs:
 
       - name: Fetch upstream changes
         run: |
+          git pull
           git checkout 17.0
           git fetch upstream 17.0
           
