@@ -37,10 +37,10 @@ jobs:
           git config --global user.email "no-reply-dev@jlddesign.ch"
           git config --global user.name "Bot JLD"
           git config --global credential.helper store
-          echo "https://${{ secrets.GITHUB_TOKEN }}@github.com" > ~/.git-credentials
+          echo "https://${{ secrets.TOKEN_ACCESS }}@github.com" > ~/.git-credentials
 
       - name: Push changes to forked repository
         run: |
           git push https://x-access-token:${{ secrets.TOKEN_ACCESS }}@github.com/${{ github.repository }} 18.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_ACCESS }}
