@@ -10,38 +10,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout fork repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
+          fetch-depth: 0 # Clone tout l'historique
+          fetch: all     # Télécharge toutes les branches
           persist-credentials: false  # Désactive les credentials par défaut
-
+     
+      - name: Install GitHub CLI
+        run: sudo apt-get install -y gh
+      
       - name: Configure Git user
         run: |
           git config --local user.email "no-reply-dev@jlddesign.ch"
           git config --local user.name "Bot JLD"
           
       - name: Add upstream repository
-        run: git remote add upstream https://github.com/odoo/odoo.git
-
-      - name: Fetch upstream changes
         run: |
-          git pull
-          git checkout 17.0
-          git fetch upstream 17.0
-          
-
-      - name: Merge upstream changes into 17.0
-        run: |
-           git merge upstream/17.0 --allow-unrelated-histories --strategy=recursive --strategy-option=theirs
-
-      - name: Configure git credentials for push
-        run: |
-          git config --global user.email "no-reply-dev@jlddesign.ch"
-          git config --global user.name "Bot JLD"
-          git config --global credential.helper store
-          echo "https://${{ secrets.TOKEN_ACCESS }}@github.com" > ~/.git-credentials
-
-      - name: Push changes to forked repository
-        run: |
-          git push https://x-access-token:${{ secrets.TOKEN_ACCESS }}@github.com/${{ github.repository }} 17.0
+          run: git remote add upstream https://github.com/odoo/odoo.git
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_ACCESS }}
+
+      - name: Sync branch with upstream
+        run: gh repo sync JLDdesign/odoo_odoo -b 17.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_ACCESS }}
+
