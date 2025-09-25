@@ -16,7 +16,7 @@ jobs:
 
       - name: Configure Git user
         run: |
-          git config --local user.email "no-reply-dev@jlddesign.ch"
+          git config --local user.email "robot.dev@jlddesign.ch"
           git config --local user.name "Bot JLD"
           
       - name: Add upstream repository
@@ -35,7 +35,7 @@ jobs:
 
       - name: Configure git credentials for push
         run: |
-          git config --global user.email "no-reply-dev@jlddesign.ch"
+          git config --global user.email "robot.dev@jlddesign.ch"
           git config --global user.name "Bot JLD"
           git config --global credential.helper store
           echo "https://${{ secrets.TOKEN_ACCESS }}@github.com" > ~/.git-credentials
